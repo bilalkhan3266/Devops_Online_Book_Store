@@ -1,0 +1,27 @@
+@RestController
+@RequestMapping("/api/v1/books")
+public class BookController {
+  @Autowired
+  BookRepository repo;
+
+  @PostMapping
+  public ResponseEntity<Book> add(@RequestBody Book b){ return ResponseEntity.ok(repo.save(b)); }
+
+  @GetMapping
+  public List<Book> list(@RequestParam(required=false) String title){
+    if (title!=null) return repo.findByTitleContainingIgnoreCase(title);
+    return repo.findAll();
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Book> get(@PathVariable String id){ return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Book> update(@PathVariable String id, @RequestBody Book b){
+     b.setId(id);
+     return ResponseEntity.ok(repo.save(b));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable String id){ repo.deleteById(id); return ResponseEntity.noContent().build();}
+}
