@@ -1,0 +1,10 @@
+## Online Bookstore — User Service
+Tech: Node.js, Express (demo with in-memory; production notes for MySQL)
+Endpoints:
+POST /api/v1/auth/signup
+POST /api/v1/auth/login
+GET /health
+Run:
+npm ci
+npm test
+docker build -t user-service:local .
